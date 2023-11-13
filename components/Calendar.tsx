@@ -48,11 +48,12 @@ const Calendar = () => {
         </div>
       ) : (
         <ReactCalendar
+          locale="sp"
           minDate={new Date()}
           className="py-2"
           view="month"
           onClickDay={(date) =>
-            setDate((prev) => ({ ...prev, justDate: date }))
+          setDate((prev) => ({ ...prev, justDate: date }))
           }
         />
       )}
