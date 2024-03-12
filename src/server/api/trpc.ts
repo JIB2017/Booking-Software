@@ -46,7 +46,8 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+  const { req, res } = _opts;
+  return { req, res };
 };
 
 /**
@@ -83,7 +84,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  *
  * @see https://trpc.io/docs/router
  */
-export const createTRPCRouter = t.router;
+export const router = t.router;
 
 /**
  * Public (unauthenticated) procedure
