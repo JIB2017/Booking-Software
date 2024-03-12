@@ -24,6 +24,7 @@
     "date-fns": "^2.30.0",
     "jose": "^5.2.3",
     "lucide-react": "^0.292.0",
+    "nanoid": "^5.0.6",
     "next": "^13.4.19",
     "react": "18.2.0",
     "react-calendar": "^4.6.0",
