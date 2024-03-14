@@ -6,7 +6,7 @@ import { getJwtSecretKey } from "~/lib/auth";
 import cookie from "cookie";
 import { TRPCError } from "@trpc/server";
 
-const adminRouter = router({
+export const adminRouter = router({
   login: publicProcedure
     .input(z.object({ email: z.string().email(), password: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -40,5 +40,3 @@ const adminRouter = router({
       });
     }),
 });
-
-export type AppRouter = typeof adminRouter;
