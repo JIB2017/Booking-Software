@@ -6,10 +6,11 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { verifyAuth } from "~/lib/auth";
 
 import { db } from "~/server/db";
 
@@ -71,6 +72,31 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     };
   },
 });
+
+const isAdmin = t.middleware(async ({ctx, next}) => {
+  const { req } = ctx;
+  const token = req.cookies["user-token"];
+
+  if (!token) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Missing user token",
+    })
+  }
+
+  const isVerified = await verifyAuth(token);
+
+  if (!isVerified) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Invalid user token",
+    })
+  }
+
+  return next();
+})
+
+export const adminProcedure = t.procedure.use(isAdmin)
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)

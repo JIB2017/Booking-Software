@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, publicProcedure } from "../trpc";
+import { router, publicProcedure, adminProcedure } from "../trpc";
 import { SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import { getJwtSecretKey } from "~/lib/auth";
@@ -39,4 +39,8 @@ export const adminRouter = router({
         message: "Invalid email or password",
       });
     }),
+  
+  sensitive: adminProcedure.mutation(() => {
+    return "sensitive"
+  })
 });
